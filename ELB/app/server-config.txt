@@ -1,0 +1,32 @@
+AWS ELB Project - Server Configuration Notes
+
+1. Operating System:
+   - Amazon Linux 2 / Ubuntu Server
+
+2. Web Server Installed:
+   - Apache (httpd) OR Nginx
+
+3. Installation Commands (Apache Example):
+
+   sudo yum update -y
+   sudo yum install httpd -y
+   sudo systemctl start httpd
+   sudo systemctl enable httpd
+
+4. File Deployment Path:
+   /var/www/html/index.html
+
+5. Permissions:
+   Ensure Apache has read access to web directory
+
+6. Port Configuration:
+   - HTTP: 80 allowed in Security Group
+
+7. Health Check Path:
+   /
+
+8. Validation:
+   curl http://localhost
+
+9. Test:
+   Open ALB DNS in browser → traffic should rotate between EC2 instances
