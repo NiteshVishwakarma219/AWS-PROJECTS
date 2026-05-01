@@ -37,16 +37,25 @@ Each project focuses on:
 ## 📂 Repository Structure
 
 
+## 📂 Repository Structure
+
+```text
 AWS-PROJECTS/
 │
 ├── IAM/
+│
 ├── EC2/
+│
 ├── S3/
+│
 ├── AMI/
+│
 ├── ELB/
+│
 ├── EBS/
-
-
+│
+└── README.md
+```
 ---
 
 ## 🔐 IAM – Secure Access Control System
