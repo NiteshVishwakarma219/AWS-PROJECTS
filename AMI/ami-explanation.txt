@@ -1,0 +1,38 @@
+🧠 Amazon Machine Image (AMI) – Explanation
+
+Amazon Machine Image (AMI) is a pre-configured template in AWS used to launch new EC2 instances with the same setup.
+
+It contains:
+
+Operating System (Linux/Windows)
+Installed software (Apache, Nginx, etc.)
+Application code
+Configuration settings
+Security settings (optional)
+🚀 Why AMI is Used?
+
+AMI is mainly used for:
+
+Fast EC2 instance deployment
+Backup of running servers
+Disaster recovery planning
+Scaling applications quickly
+Maintaining identical environments
+🔁 How AMI Works in This Project
+A running EC2 instance is configured with a web server.
+An AMI is created from that instance.
+The AMI acts as a snapshot of the system.
+A new EC2 instance is launched using this AMI.
+The new instance has the same setup as the original.
+⚡ Key Benefit Demonstrated
+
+In this project, AMI was used to simulate:
+✔ System backup
+✔ Failure recovery
+✔ Rapid restoration of application
+
+This proves the importance of AMI in real-world cloud environments.
+
+🏁 Conclusion
+
+AMI helps organizations reduce downtime and improve system reliability by allowing quick recovery and replication of EC2 instances.
