@@ -1,122 +1,160 @@
-👋 About This Repository
+AWS Hands-on Cloud Projects Portfolio
+👨‍💻 Nitesh Vishwakarma
 
-This repository contains my hands-on AWS Cloud Engineering projects, where I demonstrate practical implementation of core AWS services used in real-world cloud infrastructure.
+Cloud / IT Support Engineer (Fresher) | AWS | Linux | Cloud Operations
+📧 niteshvishwakarma8574@gmail.com
 
-I am continuously building and improving this repository to simulate enterprise-level cloud environments using AWS.
+🔗 LinkedIn: linkedin.com/in/nitesh1vishwakarma
+🔗 GitHub: github.com/NiteshVishwakarma219
 
-🎯 Objective
+🚀 About This Repository
 
-The main goal of this repository is to:
+This repository contains my hands-on AWS cloud projects, designed to demonstrate real-world understanding of core AWS services used in cloud support, cloud operations, and DevOps environments.
 
-Gain strong practical experience in AWS Cloud
-Build real-world cloud infrastructure projects
-Understand cloud architecture, security, and deployment
-Prepare for roles like:
-Cloud Support Engineer ☁️
-AWS Cloud Engineer
-DevOps Trainee
-NOC / IT Support Engineer
-🧠 AWS Skills Covered (Continuously Expanding)
-🔐 Security & Access
-IAM (Identity & Access Management)
-MFA (Multi-Factor Authentication)
-Role-based access control
-Policy creation & permissions
-💻 Compute Services
-EC2 (Elastic Compute Cloud)
-Security Groups & Key Pairs
-Linux server setup
-Web server deployment
-🪣 Storage Services
-S3 (Simple Storage Service)
-Static website hosting
-Bucket policies & access control
-Data storage management
-⚖️ Networking & Availability
+Each project is built with a focus on:
+
+Real-world cloud scenarios
+Security best practices
+Hands-on AWS service implementation
+Practical troubleshooting and deployment experience
+☁️ AWS Skills Covered
+Identity & Access Management (IAM)
+Multi-Factor Authentication (MFA)
+Elastic Compute Cloud (EC2)
+Elastic Block Storage (EBS)
+Amazon Machine Image (AMI)
 Elastic Load Balancer (ELB)
-High availability architecture
-Traffic distribution concepts
-🖼️ Machine Images & Backup
-AMI (Amazon Machine Image)
-EC2 backup & restore system
-Snapshot-based recovery
-🌐 (Upcoming)
-VPC (Virtual Private Cloud)
-Subnets, Route Tables, Internet Gateway
-CloudWatch Monitoring
-Auto Scaling Groups
-RDS Databases
-🏗️ Repository Structure
-AWS-CLOUD-PROJECTS/
+Simple Storage Service (S3)
+Security Groups & Networking Basics
+Basic Linux Server Management
+📂 Repository Structure
+
+AWS-PROJECTS/
 │
-├── 01-IAM-Secure-Access-System/
-├── 02-EC2-Web-Server-Deployment/
-├── 03-S3-Static-Website-Hosting/
-├── 04-AMI-Backup-Recovery-System/
-├── 05-ELB-High-Availability-System/
+├── IAM/
+│   └── Role-Based Access Control System
 │
-└── README.md  (This File)
-📌 Projects Overview
-🔐 IAM Secure Access System
+├── EC2/
+│   └── Linux Web Server Deployment
+│
+├── S3/
+│   └── Static Website Hosting
+│
+├── AMI/
+│   └── EC2 Backup & Recovery System
+│
+├── ELB/
+│   └── High Availability Web Application
+│
+├── EBS/
+│   └── Volume Attachment & Data Persistence Demo
+│
+└── README.md
+
+🔐 1. IAM – Secure Access Control System
+
+Project Objective:
+Implement secure role-based access control using AWS IAM.
+
+What I did:
+
 Created IAM users and groups
-Applied least privilege policies
-Enabled MFA authentication
-Implemented secure access control system
-💻 EC2 Web Server Deployment
+Configured permission policies
+Enabled MFA for security enhancement
+Applied least privilege access model
+
+Key Learning:
+
+AWS security fundamentals
+Identity management in cloud environments
+💻 2. EC2 – Linux Web Server Deployment
+
+Project Objective:
+Host a web application using EC2 instance.
+
+What I did:
+
 Launched EC2 instance (Linux)
-Installed Apache/Nginx server
-Hosted static/dynamic website
 Configured security groups
-🪣 S3 Static Website Hosting
+Installed Apache/Nginx server
+Deployed static web page
+
+Key Learning:
+
+Cloud compute infrastructure
+Server deployment and configuration
+🪣 3. S3 – Static Website Hosting
+
+Project Objective:
+Host a static website using Amazon S3.
+
+What I did:
+
 Created S3 bucket
 Uploaded website files
-Enabled static hosting
-Configured public access policy
-🖼️ AMI Backup & Recovery System
-Created custom AMI from EC2 instance
-Launched new instance using AMI
-Verified system replication and recovery
-⚖️ ELB High Availability System
-Deployed multiple EC2 instances
+Enabled static website hosting
+Configured public access policies
+
+Key Learning:
+
+Cloud storage systems
+Static web hosting architecture
+🖼️ 4. AMI – Backup & Recovery System
+
+Project Objective:
+Create reusable machine images for disaster recovery.
+
+What I did:
+
+Created AMI from EC2 instance
+Launched new EC2 using AMI
+Verified system replication
+
+Key Learning:
+
+Backup strategies in cloud
+System recovery mechanisms
+⚖️ 5. ELB – High Availability System
+
+Project Objective:
+Distribute traffic across multiple EC2 instances.
+
+What I did:
+
+Created multiple EC2 instances
 Configured Application Load Balancer
-Tested traffic distribution across servers
-📷 Proof of Work
+Tested traffic distribution
 
-Each project contains:
+Key Learning:
 
-Architecture explanation
-AWS console screenshots
-Configuration steps
-Output verification (working demo)
-🧪 Tools & Technologies
-Amazon Web Services (AWS)
-Linux (Amazon Linux / Ubuntu)
-Apache / Nginx
-Git & GitHub
-Cloud Architecture Concepts
-📈 Learning Outcome
+High availability architecture
+Load balancing concepts
+📊 Project Highlights
 
-Through these projects, I gained practical understanding of:
+✔ Real AWS console-based hands-on work
+✔ Security-first approach using IAM & MFA
+✔ Cloud infrastructure deployment experience
+✔ Basic DevOps-style architecture understanding
 
-Cloud infrastructure design
-AWS core service integration
-Security best practices in cloud
-High availability system design
-Real-world deployment workflows
-🚀 Future Plans
+🎯 Career Objective
 
-I am actively expanding this repository with:
+To secure a Cloud Support / Cloud Engineer / AWS Support role where I can apply my hands-on AWS knowledge, strengthen cloud infrastructure skills, and contribute to real-world cloud operations and automation environments.
 
-VPC Networking Architecture
-CI/CD Pipeline (GitHub Actions / AWS CodePipeline)
-Docker & Container Deployment
-Monitoring with CloudWatch
-Serverless (Lambda, API Gateway)
-Terraform Infrastructure as Code (IaC)
+📌 Future Improvements (Roadmap)
+AWS CLI & Automation
+CloudWatch Monitoring
+VPC Networking
+Auto Scaling Groups
+CI/CD pipelines (basic DevOps)
+Terraform (Infrastructure as Code)
 🔗 Connect With Me
-📧 Email: niteshvishwakarma8574@gmail.com
-💼 LinkedIn: linkedin.com/in/nitesh1vishwakarma
-💻 GitHub: github.com/NiteshVishwakarma219
-⚡ Note
 
-This repository is part of my continuous AWS Cloud Engineering journey, and will keep evolving with real-world projects and production-style architectures.
+If you're a recruiter or engineer reviewing this, feel free to connect:
+
+📧 Email: niteshvishwakarma8574@gmail.com
+
+🔗 LinkedIn: linkedin.com/in/nitesh1vishwakarma
+
+⭐ Note
+
+This repository is continuously updated as I build more AWS hands-on projects and improve my cloud engineering skills.
