@@ -1,0 +1,50 @@
+
+---
+
+# 📄 ✅ FULL `commands.txt`
+
+```bash
+# Check volumes
+lsblk
+
+# Format volume
+sudo mkfs -t ext4 /dev/nvme1n1
+
+# Create mount directory
+sudo mkdir /data
+
+# Mount volume
+sudo mount /dev/nvme1n1 /data
+
+# Change ownership
+sudo chown ec2-user:ec2-user /data
+
+# Go to directory
+cd /data
+
+# Create files
+echo "Employee Records" > employees.txt
+echo "Confidential Data" > company.txt
+
+# Create folder and file
+mkdir project_files
+touch project_files/app.log
+
+# Verify data
+ls -l
+
+# Delete data (simulate failure)
+rm -rf /data/*
+
+# Create restore directory
+sudo mkdir /restore
+
+# Mount restored volume
+sudo mount /dev/nvme2n1 /restore
+
+# Verify recovered data
+ls /restore
+
+# Troubleshooting commands
+sudo file -s /dev/nvme2n1
+df -h
