@@ -1,0 +1,518 @@
+🚀 STEP 1 — Create Project Foundation
+We will first prepare AWS infrastructure correctly before coding.
+Current Goal:
+Create DynamoDB + IAM Role + EC2 Server
+After this, we will start backend coding.
+
+🏗️ PHASE 1 — AWS SETUP
+
+✅ STEP 1 — Create DynamoDB Table
+Open:
+AWS DynamoDB Console
+
+Click:
+Create Table
+
+Fill Details
+Setting
+Value
+Table Name
+Students
+Partition Key
+StudentID
+Type
+String
+
+Billing Mode
+Select:
+On-demand
+
+Click
+Create Table
+Wait until status becomes:
+Active
+✅ STEP 2 — Create IAM Role
+Open:
+AWS IAM Console
+
+Go To
+Roles → Create Role
+
+Trusted Entity
+Choose:
+AWS Service
+Use case:
+EC2
+Click:
+Next
+
+Permissions
+Search:
+AmazonDynamoDBFullAccess
+Select it.
+Click:
+Next
+
+Role Name
+EC2-DynamoDB-Role
+Click:
+Create Role
+✅ STEP 3 — Launch EC2 Instance
+Open:
+AWS EC2 Console
+
+Click:
+Launch Instance
+
+Configure Instance
+
+Name
+student-management-server
+
+AMI
+Choose:
+Amazon Linux 2023
+
+Instance Type
+t2.micro
+Free tier eligible.
+
+Key Pair
+Create new key pair.
+Download:
+student-key.pem
+Store safely.
+
+Network Settings
+Allow:
+Type
+Port
+SSH
+22
+HTTP
+80
+
+Advanced Details
+Attach IAM Role:
+EC2-DynamoDB-Role
+
+Click:
+Launch Instance
+Wait until:
+Running
+    • Instance name 
+✅ STEP 4 — Connect EC2
+Open terminal in your computer.
+Go to folder where:
+student-key.pem
+exists.
+
+Run Command
+ssh -i student-key.pem ec2-user@YOUR_PUBLIC_IP
+Replace:
+YOUR_PUBLIC_IP
+with actual EC2 public IP.
+
+If Permission Error
+Run:
+chmod 400 student-key.pem
+Then retry SSH.
+
+Successful Login Looks Like
+[ec2-user@ip-172-xx-xx-xx ~]$
+✅ STEP 5 — Install Docker
+Inside EC2 terminal run:
+sudo dnf install docker -y
+Wait until installation finishes.
+✅ STEP 6 — Start Docker
+Run:
+sudo systemctl start docker
+Enable auto start:
+sudo systemctl enable docker
+
+✅ STEP 7 — Add User To Docker Group
+Run:
+sudo usermod -aG docker ec2-user
+Now exit SSH:
+exit
+Reconnect again:
+ssh -i student-key.pem ec2-user@YOUR_PUBLIC_IP
+
+✅ STEP 8 — Verify Docker
+Run:
+docker --version
+🚀 PHASE 2 — Backend Development
+Now we will create our own professional backend.
+Goal:
+Node.js + Express + DynamoDB Backend APIs
+
+🏗️ FINAL BACKEND FLOW
+Frontend
+   ↓
+Express APIs
+   ↓
+DynamoDB
+
+📂 STEP 9 — Create Project Folder
+Inside EC2 terminal run:
+mkdir student-management-system
+Go inside folder:
+cd student-management-system
+🚀 STEP 10 — Initialize Node.js Project
+Run:
+npm init -y
+This creates:
+package.json
+🚀 STEP 11 — Install Required Packages
+Run:
+npm install express aws-sdk cors dotenv body-parser
+
+What These Packages Do
+Package
+Purpose
+express
+Backend framework
+aws-sdk
+Connect DynamoDB
+cors
+Frontend/backend communication
+dotenv
+Environment variables
+body-parser
+Read request data
+
+🚀 STEP 12 — Create Project Structure
+Run:
+mkdir public
+mkdir routes
+touch server.js
+touch .env
+touch routes/students.js
+
+Verify Structure
+Run:
+ls
+You should see:
+node_modules
+package.json
+package-lock.json
+public
+routes
+server.js
+.env
+🚀 STEP 13 — Configure Environment Variables
+Open .env file:
+nano .env
+Add:
+AWS_REGION=ap-south-1
+TABLE_NAME=Students
+PORT=3000
+Save:
+CTRL + O → Enter
+Exit:
+CTRL + X
+🚀 STEP 14 — Create Main Backend Server
+Open:
+nano server.js
+Paste this full code:
+const express = require('express');
+const AWS = require('aws-sdk');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+require('dotenv').config();
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+app.use(express.static('public'));
+AWS.config.update({
+  region: process.env.AWS_REGION
+});
+const dynamodb = new AWS.DynamoDB.DocumentClient();
+app.get('/', (req, res) => {
+  res.send('Student Management Backend Running');
+});
+app.post('/add-student', async (req, res) => {
+  const {
+    StudentID,
+    FullName,
+    FatherName,
+    MotherName,
+    Email,
+    Phone,
+    Course,
+    Department,
+    Year,
+    City,
+    State,
+    Country,
+    BloodGroup,
+    Gender
+  } = req.body;
+  const params = {
+    TableName: process.env.TABLE_NAME,
+    Item: {
+      StudentID,
+      FullName,
+      FatherName,
+      MotherName,
+      Email,
+      Phone,
+      Course,
+      Department,
+      Year,
+      City,
+      State,
+      Country,
+      BloodGroup,
+      Gender
+    }
+  };
+  try {
+    await dynamodb.put(params).promise();
+    res.send('Student Added Successfully');
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+app.get('/students', async (req, res) => {
+  const params = {
+    TableName: process.env.TABLE_NAME
+  };
+  try {
+    const data = await dynamodb.scan(params).promise();
+    res.json(data.Items);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+app.listen(process.env.PORT, () => {
+  console.log(`Server running on port ${process.env.PORT}`);
+});
+Save:
+CTRL + O → Enter
+Exit:
+CTRL + X
+🚀 STEP 15 — Run Backend Server
+Run:
+node server.js
+Expected output:
+Server running on port 3000
+
+🚀 STEP 16 — Verify Backend
+Open browser:
+http://YOUR_PUBLIC_IP:3000
+You should see:
+Student Management Backend Running
+🚀 IMPORTANT SECURITY GROUP UPDATE
+You currently allowed:
+    • Port 22 
+    • Port 80 
+But backend runs on:
+3000
+So:
+Open EC2 Security Group.
+Add inbound rule:
+Type
+Port
+Custom TCP
+3000
+Source:
+0.0.0.0/0
+Save rules.
+🚀 PHASE 3 — Professional Frontend (Real Student Dashboard UI)
+Now we will build a real school/college ERP-style UI (not simple demo UI).
+Goal:
+Professional Student Management Dashboard (Frontend)
+
+🏗️ UI DESIGN STRUCTURE
+We will build:
+Sidebar + Topbar + Dashboard Cards + Student Form + Table
+
+📂 STEP 17 — Create Frontend Files
+Inside your project:
+cd student-management-system
+mkdir public
+cd public
+touch index.html style.css app.js
+🎨 STEP 18 — FRONTEND UI (index.html)
+Open:
+nano public/index.html
+Paste:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Management System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>📚 School ERP</h2>
+    <ul>
+      <li>Dashboard</li>
+      <li>Add Student</li>
+      <li>View Students</li>
+    </ul>
+  </div>
+  <!-- Main Content -->
+  <div class="main">
+    <div class="topbar">
+      <h1>Student Dashboard</h1>
+    </div>
+    <!-- Cards -->
+    <div class="cards">
+      <div class="card">Total Students</div>
+      <div class="card">Active Courses</div>
+      <div class="card">Departments</div>
+    </div>
+    <!-- Form -->
+    <div class="form">
+      <h3>Add Student</h3>
+      <input id="StudentID" placeholder="Student ID">
+      <input id="FullName" placeholder="Full Name">
+      <input id="Email" placeholder="Email">
+      <input id="Course" placeholder="Course">
+      <input id="City" placeholder="City">
+      <button onclick="addStudent()">Add Student</button>
+    </div>
+    <!-- Table -->
+    <div class="table">
+      <h3>Student Records</h3>
+      <div id="students"></div>
+    </div>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
+🎨 STEP 19 — CSS (Professional UI)
+Open:
+nano public/style.css
+Paste:
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f4f6f9;
+}
+.container {
+  display: flex;
+}
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #1e1e2f;
+  color: white;
+  height: 100vh;
+  padding: 20px;
+}
+.sidebar h2 {
+  color: #00d4ff;
+}
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+.sidebar ul li {
+  padding: 10px;
+  margin: 10px 0;
+  background: #2c2c3e;
+  cursor: pointer;
+}
+/* Main */
+.main {
+  flex: 1;
+  padding: 20px;
+}
+/* Topbar */
+.topbar {
+  background: white;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+/* Cards */
+.cards {
+  display: flex;
+  gap: 15px;
+}
+.card {
+  background: white;
+  padding: 20px;
+  flex: 1;
+  border-radius: 10px;
+  text-align: center;
+}
+/* Form */
+.form {
+  background: white;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+.form input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+}
+button {
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  width: 100%;
+}
+/* Table */
+.table {
+  background: white;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+⚙️ STEP 20 — FRONTEND JS (Connect Backend)
+Open:
+nano public/app.js
+Paste:
+async function addStudent() {
+  const data = {
+    StudentID: document.getElementById("StudentID").value,
+    FullName: document.getElementById("FullName").value,
+    Email: document.getElementById("Email").value,
+    Course: document.getElementById("Course").value,
+    City: document.getElementById("City").value
+  };
+  await fetch("/add-student", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+  alert("Student Added Successfully");
+  loadStudents();
+}
+async function loadStudents() {
+  const res = await fetch("/students");
+  const students = await res.json();
+  let html = "<ul>";
+  students.forEach(s => {
+    html += `
+      <li>
+        ${s.StudentID} - ${s.FullName} - ${s.Course} - ${s.City}
+      </li>
+    `;
+  });
+  html += "</ul>";
+  document.getElementById("students").innerHTML = html;
+}
+loadStudents();
+🚀 STEP 21 — Run Backend
+Go back to root:
+cd ..
+node server.js
+
+🌐 STEP 22 — Open Website
+Open in browser:
+http://YOUR_EC2_PUBLIC_IP:3000
