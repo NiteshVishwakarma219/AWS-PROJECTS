@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance Management System</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>Attendance Management</h1>
+
+        <p>
+            Cloud Based Student Attendance System
+        </p>
+
+    </div>
+
+    <div class="form-box">
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Enter Student Name">
+
+        <input
+            type="text"
+            id="course"
+            placeholder="Enter Course Name">
+
+        <select id="status">
+
+            <option value="Present">
+                ✅ Present
+            </option>
+
+            <option value="Absent">
+                ❌ Absent
+            </option>
+
+        </select>
+
+        <button onclick="submitAttendance()">
+            Mark Attendance
+        </button>
+
+        <p id="result"></p>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
