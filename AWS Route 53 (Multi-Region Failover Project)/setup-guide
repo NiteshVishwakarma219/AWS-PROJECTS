@@ -1,0 +1,372 @@
+# 🚀 AWS Route 53 Multi-Region Failover Architecture — Setup Guide
+
+This guide explains how to deploy a highly available multi-region failover architecture using AWS Route 53, EC2, and Application Load Balancers.
+
+---
+
+# 📌 Project Objective
+
+Build a production-style architecture where:
+
+- Users access the application using a domain name
+- Route 53 monitors server health
+- Traffic automatically switches to a backup region if the primary region fails
+
+---
+
+# 🏗️ Architecture Overview
+
+```text
+Users
+   │
+   ▼
+Amazon Route 53
+   │
+   ├──────────────► Primary Region (Mumbai)
+   │                    │
+   │                    ▼
+   │              Application Load Balancer
+   │                    │
+   │                    ▼
+   │                 EC2 Server
+   │
+   └──────────────► Secondary Region (Singapore)
+                        │
+                        ▼
+                 Application Load Balancer
+                        │
+                        ▼
+                    Backup EC2
+```
+
+---
+
+# 🛠️ AWS Services Used
+
+| Service | Purpose |
+|---|---|
+| Route 53 | DNS and Failover Routing |
+| EC2 | Web Hosting |
+| ALB | Load Balancing |
+| VPC | Networking |
+| CloudWatch | Monitoring |
+| Security Groups | Firewall Rules |
+
+---
+
+# ⚙️ Prerequisites
+
+Before starting:
+
+✅ AWS Account  
+✅ Domain Name (Optional)  
+✅ Basic AWS Knowledge  
+✅ IAM User with Administrator Access  
+
+---
+
+# 🔥 Step 1 — Launch Primary EC2 Instance
+
+## Region
+
+```text
+ap-south-1 (Mumbai)
+```
+
+---
+
+## EC2 Configuration
+
+| Setting | Value |
+|---|---|
+| AMI | Amazon Linux 2 |
+| Instance Type | t2.micro |
+| Security Group | Allow HTTP and SSH |
+
+---
+
+## Install Apache
+
+Connect to EC2 and run:
+
+```bash
+sudo yum update -y
+sudo yum install httpd -y
+sudo systemctl start httpd
+sudo systemctl enable httpd
+```
+
+---
+
+## Create Web Page
+
+```bash
+echo "Primary Server Running" | sudo tee /var/www/html/index.html
+```
+
+---
+
+# 🔥 Step 2 — Launch Backup EC2 Instance
+
+## Region
+
+```text
+ap-southeast-1 (Singapore)
+```
+
+---
+
+## Install Apache
+
+```bash
+sudo yum update -y
+sudo yum install httpd -y
+sudo systemctl start httpd
+sudo systemctl enable httpd
+```
+
+---
+
+## Create Backup Web Page
+
+```bash
+echo "Backup Server Running" | sudo tee /var/www/html/index.html
+```
+
+---
+
+# 🔥 Step 3 — Create Target Groups
+
+Create target groups in both regions.
+
+---
+
+## Configuration
+
+| Setting | Value |
+|---|---|
+| Target Type | Instances |
+| Protocol | HTTP |
+| Port | 80 |
+
+---
+
+# 🔥 Step 4 — Register EC2 Instances
+
+Attach:
+
+- Primary EC2 → Primary Target Group
+- Backup EC2 → Backup Target Group
+
+---
+
+# 🔥 Step 5 — Create Application Load Balancers
+
+Create:
+
+- Primary ALB (Mumbai)
+- Secondary ALB (Singapore)
+
+---
+
+## ALB Configuration
+
+| Setting | Value |
+|---|---|
+| Scheme | Internet Facing |
+| Listener | HTTP : 80 |
+
+---
+
+# 🔥 Step 6 — Test ALB
+
+Copy ALB DNS name and open in browser.
+
+Expected:
+
+```text
+Primary Server Running
+```
+
+and
+
+```text
+Backup Server Running
+```
+
+---
+
+# 🔥 Step 7 — Open Route 53
+
+Go to AWS Console.
+
+Search:
+
+```text
+Route 53
+```
+
+---
+
+# 🔥 Step 8 — Create Hosted Zone
+
+Click:
+
+```text
+Hosted Zones
+```
+
+Then:
+
+```text
+Create Hosted Zone
+```
+
+---
+
+## Configuration
+
+| Setting | Value |
+|---|---|
+| Domain Name | example.com |
+| Type | Public Hosted Zone |
+
+---
+
+# 🔥 Step 9 — Create Health Check
+
+Go to:
+
+```text
+Health Checks
+```
+
+Click:
+
+```text
+Create Health Check
+```
+
+---
+
+## Health Check Configuration
+
+| Setting | Value |
+|---|---|
+| Endpoint | Primary ALB DNS |
+| Protocol | HTTP |
+| Port | 80 |
+
+---
+
+# 🔥 Step 10 — Create Failover Records
+
+---
+
+# Primary Record
+
+| Setting | Value |
+|---|---|
+| Record Type | A |
+| Alias | Yes |
+| Route Traffic To | Primary ALB |
+| Failover | Primary |
+| Health Check | Attach Created Health Check |
+
+---
+
+# Secondary Record
+
+| Setting | Value |
+|---|---|
+| Record Type | A |
+| Alias | Yes |
+| Route Traffic To | Secondary ALB |
+| Failover | Secondary |
+
+---
+
+# 🔥 Step 11 — Testing
+
+Open domain name in browser.
+
+Expected Output:
+
+```text
+Primary Server Running
+```
+
+---
+
+# 🔥 Step 12 — Simulate Failure
+
+Stop primary EC2 instance.
+
+Wait for Route 53 health check failure.
+
+Refresh website.
+
+Expected Output:
+
+```text
+Backup Server Running
+```
+
+Traffic automatically redirects to backup region.
+
+---
+
+# 📸 Recommended Screenshots
+
+Capture screenshots of:
+
+- EC2 Dashboard
+- ALB Dashboard
+- Target Groups
+- Route 53 Hosted Zone
+- DNS Records
+- Health Checks
+- Website Output
+- Failover Working
+
+---
+
+# 🧠 Learning Outcomes
+
+After completing this setup, you will understand:
+
+- DNS Routing
+- Route 53 Failover
+- Load Balancing
+- Cloud Networking
+- High Availability
+- Disaster Recovery
+- Multi-Region Deployment
+
+---
+
+# 🔐 Best Practices
+
+✅ Use Health Checks  
+✅ Enable Monitoring  
+✅ Use Multiple Regions  
+✅ Keep TTL Low During Testing  
+✅ Restrict Security Groups Properly  
+✅ Use HTTPS in Production  
+
+---
+
+# 📈 Future Enhancements
+
+- Auto Scaling Group
+- CloudFront CDN
+- HTTPS using ACM
+- Terraform Automation
+- CI/CD Pipeline
+- AWS WAF Integration
+
+---
+
+# 👨‍💻 Author
+
+Nitesh Vishwakarma

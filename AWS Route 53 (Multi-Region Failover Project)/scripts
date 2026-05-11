@@ -1,0 +1,31 @@
+# ============================================
+# AWS Route 53 Multi-Region Failover Project
+# EC2 Web Server Setup Script
+# ============================================
+
+#!/bin/bash
+
+# Update system packages
+sudo yum update -y
+
+# Install Apache Web Server
+sudo yum install httpd -y
+
+# Start Apache Service
+sudo systemctl start httpd
+
+# Enable Apache on Boot
+sudo systemctl enable httpd
+
+# Create Web Page
+echo "<h1>Primary Server Running</h1>" | sudo tee /var/www/html/index.html
+
+# Restart Apache
+sudo systemctl restart httpd
+
+# Check Apache Status
+sudo systemctl status httpd
+
+# ============================================
+# End of Script
+# ============================================
